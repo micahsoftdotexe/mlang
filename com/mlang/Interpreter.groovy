@@ -32,8 +32,7 @@ class Interpreter implements Expr.Visitor<Object>,
         execute(statement);
       }
     } catch (RuntimeError error) {
-      println("Here");
-      Lox.runtimeError(error);
+      runtimeError(error);
     }
   }
   private Object evaluate(Expr expr) {

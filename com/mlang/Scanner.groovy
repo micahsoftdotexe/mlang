@@ -145,7 +145,7 @@ class Scanner {
     String value = source.substring(start + 1, current - 1);
     addToken(STRING, value);
   }
-  private boolean match(char expected) {
+  private boolean match(String expected) {
     if (isAtEnd()) return false;
     if (source.charAt(current) != expected) return false;
 
