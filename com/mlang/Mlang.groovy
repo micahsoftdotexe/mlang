@@ -46,15 +46,18 @@ public class Mlang {
   private static void run(String source) {
     Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
-    Parser parser = new Parser(tokens);
-    List<Stmt> statements = parser.parse();
+    // for (Token token : tokens) {
+    //   println(token);
+    // }
+    // Parser parser = new Parser(tokens);
+    // List<Stmt> statements = parser.parse();
 
-    // Stop if there was a syntax error.
-    if (hadError) {
-      return;
-    }
+    // // Stop if there was a syntax error.
+    // if (hadError) {
+    //   return;
+    // }
 
-    interpreter.interpret(statements);
+    // interpreter.interpret(statements);
   }
   static void error(int line, String message) {
     report(line, "", message);
