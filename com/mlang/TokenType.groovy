@@ -32,7 +32,7 @@ class TokenType{
     LITERAL_TOKEN_TYPES.put("{",    "LEFT_BRACE");
     LITERAL_TOKEN_TYPES.put("}",    "RIGHT_BRACE");
     LITERAL_TOKEN_TYPES.put(",",    "COMMA");
-    LITERAL_TOKEN_TYPES.put(".",    "DOT");
+    LITERAL_TOKEN_TYPES.put(".",    "DOT"); //semicolon
     LITERAL_TOKEN_TYPES.put("-",    "MINUS");
     LITERAL_TOKEN_TYPES.put("+",    "PLUS");
     LITERAL_TOKEN_TYPES.put("+=",   "PLUS_EQUAL");
@@ -43,7 +43,7 @@ class TokenType{
     LITERAL_TOKEN_TYPES.put("*",    "STAR");
     LITERAL_TOKEN_TYPES.put("!",    "BANG");
     LITERAL_TOKEN_TYPES.put("<!=>",   "BANG_EQUAL");
-    LITERAL_TOKEN_TYPES.put("<-",    "EQUAL");
+    LITERAL_TOKEN_TYPES.put("<-",    "ASSIGN"); //Equal
     LITERAL_TOKEN_TYPES.put("<=>",   "EQUAL_EQUAL");
     LITERAL_TOKEN_TYPES.put("gt",    "GREATER");
     LITERAL_TOKEN_TYPES.put("gte",    "GREATER_EQUAL");
@@ -55,21 +55,22 @@ class TokenType{
     RESERVED_WORDS.put("class",    "CLASS");
     RESERVED_WORDS.put("else",    "ELSE");
     RESERVED_WORDS.put("false",    "FALSE");
-    RESERVED_WORDS.put("funct",    "FUN");
+    RESERVED_WORDS.put("funct",    "FUNCT");
     RESERVED_WORDS.put("for",    "FOR");
     RESERVED_WORDS.put("if",    "IF");
     RESERVED_WORDS.put("nil",    "NIL");
     RESERVED_WORDS.put("or",    "OR");
+    RESERVED_WORDS.put("post",    "POST");
     RESERVED_WORDS.put("evalor",    "EVALOR");
     RESERVED_WORDS.put("scrnout",    "PRINT");
     RESERVED_WORDS.put("ret",    "RETURN");
-    RESERVED_WORDS.put("boo",    "BOOLEAN");
-    RESERVED_WORDS.put("num",    "NUMBER");
-    RESERVED_WORDS.put("str",    "STRING");
+    RESERVED_WORDS.put("boo",    "BOOLEAN_TYPE");
+    RESERVED_WORDS.put("num",    "NUMBER_TYPE");
+    RESERVED_WORDS.put("str",    "STRING_TYPE");
     REGEX_TYPES = new HashMap<>();
     REGEX_TYPES.put("IDENTIFIER",    "[A-Za-z_][A-Za-z0-9_]*");
     REGEX_TYPES.put("STRING",    '"[^"]*"');
-  REGEX_TYPES.put("NUMBER",    '[0-9]+(\\.[0-9]+)?');
+    REGEX_TYPES.put("NUMBER",    '[0-9]+(\\.[0-9]+)?');
 
   }
 

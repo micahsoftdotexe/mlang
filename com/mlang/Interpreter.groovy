@@ -96,7 +96,7 @@ class Interpreter implements Expr.Visitor<Object>,
     return null;
   }
   @Override
-  public Void visitPrintStmt(Stmt.Print stmt) {
+  public Void visitScrnoutStmt(Stmt.Scrnout stmt) {
     Object value = evaluate(stmt.expression);
     System.out.println(stringify(value));
     return null;

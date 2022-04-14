@@ -46,9 +46,9 @@ public class Mlang {
   private static void run(String source) {
     Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
-    // for (Token token : tokens) {
-    //   println(token);
-    // }
+    for (Token token : tokens) {
+      println(token);
+    }
     // Parser parser = new Parser(tokens);
     // List<Stmt> statements = parser.parse();
 
