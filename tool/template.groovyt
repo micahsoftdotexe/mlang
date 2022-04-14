@@ -1,0 +1,21 @@
+package com.mlang;
+
+import java.util.List;
+
+abstract class <TemplateName>{
+    interface Visitor<R> {
+        R visit<SubclassName><TemplateName>(<SubclassName><variable>);
+    }
+    static class <SubclassName> extends <TemplateName> {
+        <SubclassName>(<FieldType> <Field>) {
+            this.<Field> = <Field>
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visit<SubclassName><TemplateName>(this)
+        }
+
+        final <FieldType> <Field>;
+    }
+}

@@ -4,187 +4,126 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import com.mlang.Token;
+import com.mlang.LoxError;
 
-import static com.mlang.TokenType.*; // [static-import]
+// import static com.mlang.TokenType; // [static-import]
 
 class Scanner {
-  private static final Map<String, TokenType> keywords;
-
-  static {
-    keywords = new HashMap<>();
-    keywords.put("and",    AND);
-    keywords.put("class",  CLASS);
-    keywords.put("else",   ELSE);
-    keywords.put("false",  FALSE);
-    keywords.put("for",    FOR);
-    keywords.put("fun",    FUN);
-    keywords.put("if",     IF);
-    keywords.put("nil",    NIL);
-    keywords.put("or",     OR);
-    keywords.put("print",  PRINT);
-    keywords.put("return", RETURN);
-    keywords.put("super",  SUPER);
-    keywords.put("this",   THIS);
-    keywords.put("true",   TRUE);
-    keywords.put("var",    VAR);
-    keywords.put("while",  WHILE);
-  }
-  private final String source;
-  private final List<Token> tokens = new ArrayList<>();
-  private int start = 0;
-  private int current = 0;
-  private int line = 1;
+  private List<String> lines;
+  private List<Token> tokens;
+  public  List<LoxError> errors;
+  private int line;
 
   Scanner(String source) {
-    this.source = source;
+    String[] linesArray = source.split("\n");
+    lines = new ArrayList<String>(Arrays.asList(linesArray));
+    tokens = new ArrayList<Token>();
+    errors = new ArrayList<Error>();
+    line = 1;
   }
-  List<Token> scanTokens() {
-    while (!isAtEnd()) {
-      // We are at the beginning of the next lexeme.
-      start = current;
-      scanToken();
-    }
 
-    tokens.add(new Token(EOF, "", null, line));
+  public List<Token> scanTokens() {
+    for (String line : lines) {
+      String tempLine = line;
+      while (!tempLine.isEmpty()) {
+        // get possible token
+        String[] token = scanFirst(tempLine);
+        //println(token.getAt(1)+token.getAt(0));
+        // check for error
+        LoxError error = checkError(tempLine, token);
+        if (error != null) {
+          if (error.message == "Unterminated string.") {
+            this.tokens.add(new Token("EOF", "", null, this.line))
+            return this.tokens;
+          } else {
+            tempLine = tempLine.substring(1);
+          }
+        } else {
+          //update tempLine and add tokens
+          tempLine = checkToken(tempLine, token);
+        }
+      }
+      if (this.line < lines.size()) {
+        this.line++;
+      }
+    }
+    tokens.add(new Token("EOF", "", null, this.line));
     return tokens;
   }
-  private void scanToken() {
-    char c = advance();
-    switch (c) {
-      case '(': addToken(LEFT_PAREN); break;
-      case ')': addToken(RIGHT_PAREN); break;
-      case '{': addToken(LEFT_BRACE); break;
-      case '}': addToken(RIGHT_BRACE); break;
-      case ',': addToken(COMMA); break;
-      case '.': addToken(DOT); break;
-      case '-': addToken(MINUS); break;
-      case '+': addToken(PLUS); break;
-      case ';': addToken(SEMICOLON); break;
-      case '*': addToken(STAR); break; // [slash]
-      case '!':
-        addToken(match('=') ? BANG_EQUAL : BANG);
-        break;
-      case '=':
-        addToken(match('=') ? EQUAL_EQUAL : EQUAL);
-        break;
-      case '<':
-        addToken(match('=') ? LESS_EQUAL : LESS);
-        break;
-      case '>':
-        addToken(match('=') ? GREATER_EQUAL : GREATER);
-        break;
-      case '/':
-        if (match('/')) {
-          // A comment goes until the end of the line.
-          while (peek() != '\n' && !isAtEnd()) advance();
-        } else {
-          addToken(SLASH);
+
+
+
+  private String[] scanFirst(String line) {
+    String[] possibleToken = null;
+    TokenType.LITERAL_TOKEN_TYPES.forEach((lexeme, type) -> {
+      if (line.startsWith(lexeme)) {
+        if (possibleToken == null || lexeme.length() > possibleToken.getAt(0)) {
+          possibleToken = [lexeme, type];
         }
-        break;
+      }
+    });
+    if (possibleToken == null) {
+      TokenType.REGEX_TYPES.forEach((type, regex) -> {
+        Pattern pattern = Pattern.compile("^"+regex);
+        Matcher match = pattern.matcher(line);
+        if (match.find()) {
+          possibleToken = [match.group(0), type];
 
-      case ' ':
-      case '\r':
-      case '\t':
-        // Ignore whitespace.
-        break;
-
-      case '\n':
-        line++;
-        break;
-
-      case '"': string(); break;
-
-      default:
-        if (isDigit(c)) {
-          number();
-        } else if (isAlpha(c)) {
-          identifier();
-        } else {
-          Lox.error(line, "Unexpected character.");
         }
-        break;
+
+      });
+      if (possibleToken != null && possibleToken.getAt(1) == "IDENTIFIER") {
+        TokenType.RESERVED_WORDS.forEach((lexeme, type) -> {
+          if (lexeme == possibleToken.getAt(0)) {
+            possibleToken = [lexeme, type];
+          }
+
+        });
+      }
     }
+    return possibleToken;
   }
-  private void identifier() {
-    while (isAlphaNumeric(peek())) advance();
 
-    String text = source.substring(start, current);
-    TokenType type = keywords.get(text);
-    if (type == null) type = IDENTIFIER;
-    addToken(type);
-  }
-  private void number() {
-    while (isDigit(peek())) advance();
-
-    // Look for a fractional part.
-    if (peek() == '.' && isDigit(peekNext())) {
-      // Consume the "."
-      advance();
-
-      while (isDigit(peek())) advance();
+  private String checkToken(String line, String[] token) {
+    if (token == null) {
+      return line.substring(1);
+    }
+    if (TokenType.REGEX_TYPES.containsKey(token.getAt(1))) {
+      if (token.getAt(1) == "STRING") {
+        tokens.add(new Token(token.getAt(1), token.getAt(0), token.getAt(0).replace('\"', ''), this.line));
+        return line.substring(token.getAt(0).length());
+      } else if (token.getAt(1) == "NUMBER") {
+        tokens.add(new Token(token.getAt(1), token.getAt(0), Float.parseFloat(token.getAt(0)), this.line));
+        return line.substring(token.getAt(0).length());
+      } else {
+        tokens.add(new Token(token.getAt(1), token.getAt(0), null, this.line));
+        return line.substring(token.getAt(0).length());
+      }
+    } else {
+      if (token.getAt(1) == "DOUBLE_SLASH") {
+        return "";
+      }
+      tokens.add(new Token(token.getAt(1), token.getAt(0), null, this.line));
+      return line.substring(token.getAt(0).length());
     }
 
-    addToken(NUMBER,
-        Double.parseDouble(source.substring(start, current)));
   }
-  private void string() {
-    while (peek() != '"' && !isAtEnd()) {
-      if (peek() == '\n') line++;
-      advance();
+
+  private LoxError checkError(String line, String[] token) {
+    if (token == null) {
+      if (line.startsWith(" ")) {
+        return null;
+      } else if (line.chars().filter(ch -> ch == '\"').count() % 2 != 0) {
+        return new LoxError(this.line, "Unterminated string.");
+      } else {
+        return new LoxError(this.line, "That ain't a character I recognize!");
+      }
     }
-
-    if (isAtEnd()) {
-      Lox.error(line, "Unterminated string.");
-      return;
-    }
-
-    // The closing ".
-    advance();
-
-    // Trim the surrounding quotes.
-    String value = source.substring(start + 1, current - 1);
-    addToken(STRING, value);
-  }
-  private boolean match(String expected) {
-    if (isAtEnd()) return false;
-    if (source.charAt(current) != expected) return false;
-
-    current++;
-    return true;
-  }
-  private char peek() {
-    if (isAtEnd()) return '\0';
-    return source.charAt(current);
-  }
-  private char peekNext() {
-    if (current + 1 >= source.length()) return '\0';
-    return source.charAt(current + 1);
-  } // [peek-next]
-  private boolean isAlpha(char c) {
-    return (c >= 'a' && c <= 'z') ||
-           (c >= 'A' && c <= 'Z') ||
-            c == '_';
-  }
-
-  private boolean isAlphaNumeric(char c) {
-    return isAlpha(c) || isDigit(c);
-  }
-  private boolean isDigit(char c) {
-    return c >= '0' && c <= '9';
-  } // [is-digit]
-  private boolean isAtEnd() {
-    return current >= source.length();
-  }
-  private char advance() {
-    return source.charAt(current++);
-  }
-
-  private void addToken(TokenType type) {
-    addToken(type, null);
-  }
-
-  private void addToken(TokenType type, Object literal) {
-    String text = source.substring(start, current);
-    tokens.add(new Token(type, text, literal, line));
+    return null;
   }
 }
+
+
