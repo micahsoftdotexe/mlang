@@ -11,35 +11,35 @@ class Interpreter implements Expr.Visitor<Object>,
   private Environment environment = globals;
 
   Interpreter() {
-    globals.define("clock", new LoxCallable() {
-      @Override
-      public int arity() { return 0; }
+    // globals.define("clock", new MlangCallable() {
+    //   @Override
+    //   public int arity() { return 0; }
 
-      @Override
-      public Object call(Interpreter interpreter,
-                         List<Object> arguments) {
-        return (double)System.currentTimeMillis() / 1000.0;
-      }
+    //   @Override
+    //   public Object call(Interpreter interpreter,
+    //                      List<Object> arguments) {
+    //     return (double)System.currentTimeMillis() / 1000.0;
+    //   }
 
-      @Override
-      public String toString() { return "<native fn>"; }
-    });
-    globals.define("in", new LoxCallable() {
-      @Override
-      public int arity() { return 0; }
+    //   @Override
+    //   public String toString() { return "<native fn>"; }
+    // });
+    // globals.define("in", new MlangCallable() {
+    //   @Override
+    //   public int arity() { return 0; }
 
-      @Override
-      public Object call(Interpreter interpreter,
-                         List<Object> arguments) {
-        // Scanner inputScanner = new Scanner(System.in);
-        // String input = inputScanner.nextLine();
-        String input  = new java.util.Scanner(System.in).nextLine();
-        return input;
-      }
+    //   @Override
+    //   public Object call(Interpreter interpreter,
+    //                      List<Object> arguments) {
+    //     // Scanner inputScanner = new Scanner(System.in);
+    //     // String input = inputScanner.nextLine();
+    //     String input  = new java.util.Scanner(System.in).nextLine();
+    //     return input;
+    //   }
 
-      @Override
-      public String toString() { return "<native fn>"; }
-    });
+    //   @Override
+    //   public String toString() { return "<native fn>"; }
+    // });
   }
 
   void interpret(List<Stmt> statements) {
@@ -48,7 +48,7 @@ class Interpreter implements Expr.Visitor<Object>,
         execute(statement);
       }
     } catch (RuntimeError error) {
-      runtimeError(error);
+      Mlang.runtimeError(error);
     }
   }
   private Object evaluate(Expr expr) {
@@ -82,7 +82,7 @@ class Interpreter implements Expr.Visitor<Object>,
   }
   @Override
   public Void visitFunctionStmt(Stmt.Function stmt) {
-    LoxFunction function = new LoxFunction(stmt, environment);
+    MlangFunction function = new MlangFunction(stmt, environment);
     environment.define(stmt.name.lexeme, function);
     return null;
   }
@@ -97,8 +97,9 @@ class Interpreter implements Expr.Visitor<Object>,
   }
   @Override
   public Void visitScrnoutStmt(Stmt.Scrnout stmt) {
-    Object value = evaluate(stmt.expression);
-    System.out.println(stringify(value));
+    for (Expr argument : stmt.arguments) {
+      println(stringify(evaluate(argument)));
+    }
     return null;
   }
   @Override
@@ -137,24 +138,24 @@ class Interpreter implements Expr.Visitor<Object>,
     Object right = evaluate(expr.right); // [left]
 
     switch (expr.operator.type) {
-      case TokenType.BANG_EQUAL: return !isEqual(left, right);
-      case TokenType.EQUAL_EQUAL: return isEqual(left, right);
-      case TokenType.GREATER:
+      case "BANG_EQUAL": return !isEqual(left, right);
+      case "EQUAL_EQUAL": return isEqual(left, right);
+      case "GREATER":
         checkNumberOperands(expr.operator, left, right);
         return (double)left > (double)right;
-      case TokenType.GREATER_EQUAL:
+      case "GREATER_EQUAL":
         checkNumberOperands(expr.operator, left, right);
         return (double)left >= (double)right;
-      case TokenType.LESS:
+      case "LESS":
         checkNumberOperands(expr.operator, left, right);
         return (double)left < (double)right;
-      case TokenType.LESS_EQUAL:
+      case "LESS_EQUAL":
         checkNumberOperands(expr.operator, left, right);
         return (double)left <= (double)right;
-      case TokenType.MINUS:
+      case "MINUS":
         checkNumberOperands(expr.operator, left, right);
         return (double)left - (double)right;
-      case TokenType.PLUS:
+      case "PLUS":
         if (left instanceof Double && right instanceof Double) {
           return (double)left + (double)right;
         } // [plus]
@@ -165,10 +166,10 @@ class Interpreter implements Expr.Visitor<Object>,
 
         throw new RuntimeError(expr.operator,
             "Operands must be two numbers or two strings.");
-      case TokenType.SLASH:
+      case "SLASH":
         checkNumberOperands(expr.operator, left, right);
         return (double)left / (double)right;
-      case TokenType.STAR:
+      case "STAR":
         checkNumberOperands(expr.operator, left, right);
         return (double)left * (double)right;
     }
@@ -185,12 +186,12 @@ class Interpreter implements Expr.Visitor<Object>,
       arguments.add(evaluate(argument));
     }
 
-    if (!(callee instanceof LoxCallable)) {
+    if (!(callee instanceof MlangCallable)) {
       throw new RuntimeError(expr.paren,
           "Can only call functions and classes.");
     }
 
-    LoxCallable function = (LoxCallable)callee;
+    MlangCallable function = (MlangCallable)callee;
     if (arguments.size() != function.arity()) {
       throw new RuntimeError(expr.paren, "Expected " +
           function.arity() + " arguments but got " +
@@ -211,7 +212,7 @@ class Interpreter implements Expr.Visitor<Object>,
   public Object visitLogicalExpr(Expr.Logical expr) {
     Object left = evaluate(expr.left);
 
-    if (expr.operator.type == TokenType.OR) {
+    if (expr.operator.type == "OR") {
       if (isTruthy(left)) return left;
     } else {
       if (!isTruthy(left)) return left;
@@ -224,9 +225,9 @@ class Interpreter implements Expr.Visitor<Object>,
     Object right = evaluate(expr.right);
 
     switch (expr.operator.type) {
-      case TokenType.BANG:
+      case "BANG":
         return !isTruthy(right);
-      case TokenType.MINUS:
+      case "NEGATIVE":
         checkNumberOperand(expr.operator, right);
         return -(double)right;
     }

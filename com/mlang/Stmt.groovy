@@ -89,7 +89,7 @@ abstract class Stmt {
 
     @Override
     <R> R accept(Visitor<R> visitor) {
-      return visitor.visitPrintStmt(this);
+      return visitor.visitScrnoutStmt(this);
     }
 
     final List<Expr> arguments;

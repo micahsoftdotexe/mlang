@@ -50,6 +50,9 @@ public class Mlang {
       error.report();
       return;
     }
+    // for (Token token : tokens) {
+    //   System.out.println(token);
+    // }
 
     Parser parser = new Parser(tokens);
     List<Stmt> statements = parser.parse();
@@ -60,7 +63,7 @@ public class Mlang {
       return;
     }
 
-    // interpreter.interpret(statements);
+    interpreter.interpret(statements);
   }
   static void error(int line, String message) {
     report(line, "", message);

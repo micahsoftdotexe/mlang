@@ -34,6 +34,7 @@ class TokenType{
     LITERAL_TOKEN_TYPES.put(",",    "COMMA");
     LITERAL_TOKEN_TYPES.put(".",    "DOT"); //semicolon
     LITERAL_TOKEN_TYPES.put("-",    "MINUS");
+    LITERAL_TOKEN_TYPES.put("neg",    "NEGATIVE");
     LITERAL_TOKEN_TYPES.put("+",    "PLUS");
     LITERAL_TOKEN_TYPES.put("+=",   "PLUS_EQUAL");
     LITERAL_TOKEN_TYPES.put("-=",   "MINUS_EQUAL");
@@ -42,7 +43,7 @@ class TokenType{
     LITERAL_TOKEN_TYPES.put("\\",    "BACKSLASH");  
     LITERAL_TOKEN_TYPES.put("*",    "STAR");
     LITERAL_TOKEN_TYPES.put(";",   "SEMICOLON");
-    LITERAL_TOKEN_TYPES.put("!",    "BANG");
+    LITERAL_TOKEN_TYPES.put("not",    "BANG");
     LITERAL_TOKEN_TYPES.put("<!=>",   "BANG_EQUAL");
     LITERAL_TOKEN_TYPES.put("<-",    "ASSIGN"); //Equal
     LITERAL_TOKEN_TYPES.put("<=>",   "EQUAL_EQUAL");
@@ -65,9 +66,9 @@ class TokenType{
     RESERVED_WORDS.put("evalor",    "EVALOR");
     RESERVED_WORDS.put("scrnout",    "PRINT");
     RESERVED_WORDS.put("ret",    "RETURN");
-    RESERVED_WORDS.put("boo",    "BOOLEAN_TYPE");
-    RESERVED_WORDS.put("num",    "NUMBER_TYPE");
-    RESERVED_WORDS.put("str",    "STRING_TYPE");
+    // RESERVED_WORDS.put("boo",    "BOOLEAN_TYPE");
+    // RESERVED_WORDS.put("num",    "NUMBER_TYPE");
+    // RESERVED_WORDS.put("str",    "STRING_TYPE");
     REGEX_TYPES = new HashMap<>();
     REGEX_TYPES.put("IDENTIFIER",    "[A-Za-z_][A-Za-z0-9_]*");
     REGEX_TYPES.put("STRING",    '"[^"]*"');
