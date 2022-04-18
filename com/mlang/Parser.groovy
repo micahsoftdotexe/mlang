@@ -10,15 +10,22 @@ class Parser {
   private static class ParseError extends RuntimeException {}
 
   private final List<Token> tokens;
+  public  List<MlangParseError> errors;
   private int current = 0;
 
   Parser(List<Token> tokens) {
     this.tokens = tokens;
+    errors = new ArrayList<MlangParseError>();
   }
   List<Stmt> parse() {
     List<Stmt> statements = new ArrayList<>();
     while (!isAtEnd()) {
-      statements.add(declaration());
+      try {
+        statements.add(declaration());
+      } catch (MlangParseError error) {
+        errors.add(error);
+        return;
+      }
     }
 
     return statements; // [parse-error-handling]
@@ -27,15 +34,15 @@ class Parser {
     return assignment();
   }
   private Stmt declaration() {
-    try {
-      if (match("FUNCT")) return function("function");
-      if (match("POST")) return varDeclaration();
+    // try {
+    if (match("FUNCT")) return function("function");
+    if (match("POST")) return varDeclaration();
 
-      return statement();
-    } catch (ParseError error) {
-      synchronize();
-      return null;
-    }
+    return statement();
+    // } catch (ParseError error) {
+      // synchronize();
+      // return;
+    // }
   }
   private Stmt statement() {
     if (match("FOR")) return forStatement();
@@ -51,7 +58,7 @@ class Parser {
     consume("LEFT_PAREN", "Expect '(' after 'for'.");
 
     Stmt initializer;
-    if (match("DOT")) {
+    if (match("SEMICOLON")) {
       initializer = null;
     } else if (match("POST")) {
       initializer = varDeclaration();
@@ -60,10 +67,10 @@ class Parser {
     }
 
     Expr condition = null;
-    if (!check("DOT")) {
+    if (!check("SEMICOLON")) {
       condition = expression();
     }
-    consume("DOT", "Expect '.' after loop condition.");
+    consume("SEMICOLON", "Expect ';' after loop condition.");
 
     Expr increment = null;
     if (!check("RIGHT_PAREN")) {
@@ -107,43 +114,49 @@ class Parser {
     if (!check("RIGHT_PAREN")) {
       do {
         if (arguments.size() >= 255) {
-          error(peek(), "Can't have more than 255 arguments.");
+          // error(peek(), "Can't have more than 255 arguments.");
+          // MlangParseError.error(peek(), "Can't have more than 255 arguments.");
+          throw new MlangParseError(peek(), "Can't have more than 255 arguments.");
         }
         arguments.add(expression());
       } while (match("COMMA"));
     }
     // Expr value = expression();
-    consume("DOT", "Expect '.' after scrnout statement.");
+    consume("RIGHT_PAREN", "Expect ')' after arguments in scrnout.");
+    consume("SEMICOLON", "Expect ';' after scrnout statement.");
     return new Stmt.Scrnout(arguments);
   }
   private Stmt returnStatement() {
     Token keyword = previous();
     Expr value = null;
     Expr condition  = null;
-    if (!check("DOT")) {
+    if (!check("SEMICOLON")) {
       consume("LEFT_PAREN", "Expect '(' after 'return'.");
       value = expression();
-      if (check("IF")) {
+      if (match("IF")) {
+        // consume("LEFT_PAREN", "Expect '(' after 'if' in return.");
         condition = expression();
-        consume("RIGHT_PAREN", "Expect ')' after return condition.");
+        // consume("RIGHT_PAREN", "Expect ')' after return condition.");
       }
+      consume("RIGHT_PAREN", "Expect ')' after if condtion.");
+
 
     }
 
-    consume("DOT", "Expect '.' after return value.");
-    return new Stmt.Return(keyword, value);
+    consume("SEMICOLON", "Expect ';' after return value.");
+    return new Stmt.Return(keyword, value, condition);
   }
   private Stmt varDeclaration() {
     Token name = consume("IDENTIFIER", "Expect variable name.");
     consume("BACKSLASH", "Expect '\\' after variable name.");
     Token type = consume("TYPES", "Expect variable type.");
     Expr initializer = null;
-    if (match("EQUAL")) {
+    if (match("ASSIGN")) {
       initializer = expression();
     }
 
-    consume("DOT", "Expect '.' after variable declaration.");
-    return new Stmt.Var(name, initializer, type);
+    consume("SEMICOLON", "Expect ';' after variable declaration.");
+    return new Stmt.Var(name, type, initializer);
   }
   private Stmt whileStatement() {
     consume("LEFT_PAREN", "Expect '(' after 'while'.");
@@ -167,7 +180,8 @@ class Parser {
     if (!check("RIGHT_PAREN")) {
       do {
         if (parameters.size() >= 255) {
-          error(peek(), "Can't have more than 255 parameters.");
+          // error(peek(), "Can't have more than 255 parameters.");
+          throw new MlangParseError(peek(), "Can't have more than 255 parameters.");
         }
 
         parameters.add(
@@ -193,7 +207,7 @@ class Parser {
   private Expr assignment() {
     Expr expr = or();
 
-    if (match("EQUAL")) {
+    if (match("ASSIGN")) {
       Token equals = previous();
       Expr value = assignment();
 
@@ -202,7 +216,8 @@ class Parser {
         return new Expr.Assign(name, value);
       }
 
-      error(equals, "Invalid assignment target."); // [no-throw]
+      // error(equals, "Invalid assignment target."); // [no-throw]
+      throw new MlangParseError(equals, "Invalid assignment target.");
     }
 
     return expr;
@@ -287,7 +302,8 @@ class Parser {
     if (!check("RIGHT_PAREN")) {
       do {
         if (arguments.size() >= 255) {
-          error(peek(), "Can't have more than 255 arguments.");
+          //error(peek(), "Can't have more than 255 arguments.");
+          throw new MlangParseError(peek(), "Can't have more than 255 arguments.");
         }
         arguments.add(expression());
       } while (match("COMMA"));
@@ -316,24 +332,25 @@ class Parser {
     if (match("TRUE")) return new Expr.Literal(true);
     if (match("NIL")) return new Expr.Literal(null);
 
-    if (match(NUMBER, STRING)) {
+    if (match("NUMBER", "STRING")) {
       return new Expr.Literal(previous().literal);
     }
 
-    if (match(IDENTIFIER)) {
+    if (match("IDENTIFIER")) {
       return new Expr.Variable(previous());
     }
 
-    if (match(LEFT_PAREN)) {
+    if (match("LEFT_PAREN")) {
       Expr expr = expression();
       consume("RIGHT_PAREN", "Expect ')' after expression.");
       return new Expr.Grouping(expr);
     }
 
-    throw error(peek(), "Expect expression.");
+    // throw error(peek(), "Expect expression.");
+    throw new MlangParseError(peek(), "Expect expression.");
   }
   private boolean match(String... types) {
-    for (TokenType type : types) {
+    for (String type : types) {
       if (check(type)) {
         advance();
         return true;
@@ -342,15 +359,16 @@ class Parser {
 
     return false;
   }
-  private Token consume(TokenType type, String message) {
+  private Token consume(String type, String message) {
     if (check(type)) return advance();
 
-    throw error(peek(), message);
+    // throw error(peek(), message);
+    throw new MlangParseError(peek(), message);
   }
   private boolean check(String type) {
     if (isAtEnd()) return false;
     String currentType = peek().type;
-    if (type == "TYPE") {
+    if (type == "TYPES") {
       return currentType == "BOOLEAN_TYPE" ||
              currentType == "NUMBER_TYPE" || currentType == "STRING_TYPE";
     }
@@ -377,19 +395,18 @@ class Parser {
   private Token previous() {
     return tokens.get(current - 1);
   }
-  private ParseError error(Token token, String message) {
-    Mlang.error(token, message);
-    return new ParseError();
-  }
+  // private ParseError error(Token token, String message) {
+  //   Mlang.error(token, message);
+  //   return new ParseError();
+  // }
   private void synchronize() {
     advance();
 
     while (!isAtEnd()) {
-      if (previous().type == "DOT") return;
+      if (previous().type == "SEMICOLON") return;
       switch (peek().type) {
         case "CLASS":
         case "FUN":
-        //case "VAR":
         case "POST":
         case "FOR":
         case "IF":

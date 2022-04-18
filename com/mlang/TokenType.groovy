@@ -41,6 +41,7 @@ class TokenType{
     LITERAL_TOKEN_TYPES.put("//",    "DOUBLE_SLASH");
     LITERAL_TOKEN_TYPES.put("\\",    "BACKSLASH");  
     LITERAL_TOKEN_TYPES.put("*",    "STAR");
+    LITERAL_TOKEN_TYPES.put(";",   "SEMICOLON");
     LITERAL_TOKEN_TYPES.put("!",    "BANG");
     LITERAL_TOKEN_TYPES.put("<!=>",   "BANG_EQUAL");
     LITERAL_TOKEN_TYPES.put("<-",    "ASSIGN"); //Equal

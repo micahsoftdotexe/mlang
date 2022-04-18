@@ -92,7 +92,7 @@ abstract class Stmt {
       return visitor.visitPrintStmt(this);
     }
 
-    final Expr expression;
+    final List<Expr> arguments;
   }
 //< stmt-print
 //> stmt-return
@@ -110,12 +110,14 @@ abstract class Stmt {
 
     final Token keyword;
     final Expr value;
+    final Expr condition;
   }
 //< stmt-return
 //> stmt-var
   static class Var extends Stmt {
-    Var(Token name, Expr initializer) {
+    Var(Token name, Token type, Expr initializer) {
       this.name = name;
+      this.type = type;
       this.initializer = initializer;
     }
 
@@ -125,6 +127,7 @@ abstract class Stmt {
     }
 
     final Token name;
+    final Token type;
     final Expr initializer;
   }
 //< stmt-var

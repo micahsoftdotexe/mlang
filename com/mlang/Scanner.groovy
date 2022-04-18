@@ -7,21 +7,21 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.mlang.Token;
-import com.mlang.LoxError;
+import com.mlang.MlangError;
 
 // import static com.mlang.TokenType; // [static-import]
 
 class Scanner {
   private List<String> lines;
   private List<Token> tokens;
-  public  List<LoxError> errors;
+  public  List<MlangError> errors;
   private int line;
 
   Scanner(String source) {
     String[] linesArray = source.split("\n");
     lines = new ArrayList<String>(Arrays.asList(linesArray));
     tokens = new ArrayList<Token>();
-    errors = new ArrayList<Error>();
+    errors = new ArrayList<MlangError>();
     line = 1;
   }
 
@@ -31,16 +31,11 @@ class Scanner {
       while (!tempLine.isEmpty()) {
         // get possible token
         String[] token = scanFirst(tempLine);
-        //println(token.getAt(1)+token.getAt(0));
         // check for error
-        LoxError error = checkError(tempLine, token);
+        MlangError error = checkError(tempLine, token);
         if (error != null) {
-          if (error.message == "Unterminated string.") {
-            this.tokens.add(new Token("EOF", "", null, this.line))
-            return this.tokens;
-          } else {
-            tempLine = tempLine.substring(1);
-          }
+          errors.add(error);
+          return;
         } else {
           //update tempLine and add tokens
           tempLine = checkToken(tempLine, token);
@@ -112,14 +107,15 @@ class Scanner {
 
   }
 
-  private LoxError checkError(String line, String[] token) {
+  private MlangError checkError(String line, String[] token) {
     if (token == null) {
+      
       if (line.startsWith(" ")) {
         return null;
       } else if (line.chars().filter(ch -> ch == '\"').count() % 2 != 0) {
-        return new LoxError(this.line, "Unterminated string.");
+        return new MlangError(this.line, "Unterminated string.");
       } else {
-        return new LoxError(this.line, "That ain't a character I recognize!");
+        return new MlangError(this.line, '"'+line.getAt(0)+'" '+"ain't a character I recognize!");
       }
     }
     return null;

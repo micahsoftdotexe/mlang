@@ -46,16 +46,19 @@ public class Mlang {
   private static void run(String source) {
     Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
-    for (Token token : tokens) {
-      println(token);
+    for (MlangError error : scanner.errors) {
+      error.report();
+      return;
     }
-    // Parser parser = new Parser(tokens);
-    // List<Stmt> statements = parser.parse();
 
-    // // Stop if there was a syntax error.
-    // if (hadError) {
-    //   return;
-    // }
+    Parser parser = new Parser(tokens);
+    List<Stmt> statements = parser.parse();
+
+    // Stop if there was a syntax error.
+    for (MlangParseError error : parser.errors) {
+      error.report();
+      return;
+    }
 
     // interpreter.interpret(statements);
   }
@@ -70,7 +73,7 @@ public class Mlang {
     hadError = true;
   }
   static void error(Token token, String message) {
-    if (token.type == TokenType.EOF) {
+    if (token.type == "EOF") {
       report(token.line, " at end", message);
     } else {
       report(token.line, " at '" + token.lexeme + "'", message);

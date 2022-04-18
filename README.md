@@ -27,16 +27,16 @@ The language will be implemented in a AST tree walk interpreter that will be com
 program        ::= declaration * EOF
 declaration    ::= funDecl | varDecl | statement
 funDecl        ::= "funct" function
-varDecl        ::= "post" IDENTIFIER"\"TYPE ("<-" expression)? "."
+varDecl        ::= "post" IDENTIFIER"\"TYPE ("<-" expression)? ";"
 statement      ::= exprStmt | forStmt| ifStmt | scrnoutStmt| returnStmt| whileStmt| block
-exprStmt       ::= expression "."
-forStmt        ::= "for" "(" ( varDecl | exprStmt | "." )
-                           expression? "."
+exprStmt       ::= expression ";"
+forStmt        ::= "for" "(" ( varDecl | exprStmt | ";" )
+                           expression? ";"
                            expression? ")" statement
 ifStmt         ::= "if" "(" expression ")" statement
                  ( "else" statement )?
-scrnoutStmt    ::= "scrnout" arguments "."
-returnStmt     ::= "ret" ("("(expression | expression "if" expression)? ")" ".")?
+scrnoutStmt    ::= "scrnout" "(" arguments ")" ";"
+returnStmt     ::= "ret" ("("(expression | expression "if" "(" expression ")")? ")")?";"
 whileStmt      ::= "while" "(" expression ")" statement
 block          ::= "{" declaration* "}"
 expression     ::= assignment
