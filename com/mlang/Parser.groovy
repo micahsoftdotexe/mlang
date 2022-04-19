@@ -171,6 +171,7 @@ class Parser {
     consume("SEMICOLON", "Expect ';' after expression.");
     return new Stmt.Expression(expr);
   }
+  //TODO: perameter type checking
   private Stmt.Function function(String kind) {
     Token name = consume("IDENTIFIER", "Expect " + kind + " name.");
     consume("BACKSLASH", "Expect '\\' after " + kind + " name.");
@@ -369,8 +370,7 @@ class Parser {
     if (isAtEnd()) return false;
     String currentType = peek().type;
     if (type == "TYPES") {
-      return currentType == "BOOLEAN_TYPE" ||
-             currentType == "NUMBER_TYPE" || currentType == "STRING_TYPE";
+      return peek().lexeme in DataType.DATA_TYPE_NAMES;
     }
 
     return currentType == type;

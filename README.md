@@ -58,6 +58,6 @@ NUMBER         ::= DIGIT+ ( "." DIGIT+ )?
 IDENTIFIER     ::= ALPHA ( ALPHA | DIGIT )*
 ALPHA          ::= [a-z] | [A-Z] | "_"
 DIGIT          ::= [0-9]
-TYPE           ::= ("boo" | "num" | "str")
+TYPE           ::= ("boo" | "num" | "str" | "fun")
 
 ```

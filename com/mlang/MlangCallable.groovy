@@ -15,6 +15,10 @@ class MlangFunction implements MlangCallable {
     this.closure = closure;
     this.declaration = declaration;
   }
+  public String returnType() {
+    // println("Type: " + declaration.type.type);
+    return declaration.type.type;
+  }
   @Override
   public String toString() {
     return "<fn " + declaration.name.lexeme +" \\" + declaration.type.lexeme + ">";
@@ -35,8 +39,12 @@ class MlangFunction implements MlangCallable {
     try {
       interpreter.executeBlock(declaration.body, environment);
     } catch (Return returnValue) {
-      //TODO: typecheck here!
-      return returnValue.value;
+      if (Interpreter.typeCheck(returnValue.value, this.returnType())) {
+        return returnValue.value;  
+      } else {
+        throw new MlangTypeError(
+            "Function '" + declaration.name.lexeme + "' does not return a value of type " + DataType.DATA_FULL_NAME_TYPE.get(this.returnType()) +  ".");
+      }
     }
     return null;
   }

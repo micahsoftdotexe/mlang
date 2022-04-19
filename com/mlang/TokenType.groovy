@@ -32,9 +32,8 @@ class TokenType{
     LITERAL_TOKEN_TYPES.put("{",    "LEFT_BRACE");
     LITERAL_TOKEN_TYPES.put("}",    "RIGHT_BRACE");
     LITERAL_TOKEN_TYPES.put(",",    "COMMA");
-    LITERAL_TOKEN_TYPES.put(".",    "DOT"); //semicolon
+    //LITERAL_TOKEN_TYPES.put(".",    "DOT"); //semicolon
     LITERAL_TOKEN_TYPES.put("-",    "MINUS");
-    LITERAL_TOKEN_TYPES.put("neg",    "NEGATIVE");
     LITERAL_TOKEN_TYPES.put("+",    "PLUS");
     LITERAL_TOKEN_TYPES.put("+=",   "PLUS_EQUAL");
     LITERAL_TOKEN_TYPES.put("-=",   "MINUS_EQUAL");
@@ -43,14 +42,9 @@ class TokenType{
     LITERAL_TOKEN_TYPES.put("\\",    "BACKSLASH");  
     LITERAL_TOKEN_TYPES.put("*",    "STAR");
     LITERAL_TOKEN_TYPES.put(";",   "SEMICOLON");
-    LITERAL_TOKEN_TYPES.put("not",    "BANG");
     LITERAL_TOKEN_TYPES.put("<!=>",   "BANG_EQUAL");
     LITERAL_TOKEN_TYPES.put("<-",    "ASSIGN"); //Equal
     LITERAL_TOKEN_TYPES.put("<=>",   "EQUAL_EQUAL");
-    LITERAL_TOKEN_TYPES.put("gt",    "GREATER");
-    LITERAL_TOKEN_TYPES.put("gte",    "GREATER_EQUAL");
-    LITERAL_TOKEN_TYPES.put("lt",    "LESS");
-    LITERAL_TOKEN_TYPES.put("lte",    "LESS_EQUAL");
     RESERVED_WORDS = new HashMap<>();
     RESERVED_WORDS.put("and",    "AND");
     RESERVED_WORDS.put("evaland",    "EVALAND");
@@ -58,6 +52,8 @@ class TokenType{
     RESERVED_WORDS.put("else",    "ELSE");
     RESERVED_WORDS.put("false",    "FALSE");
     RESERVED_WORDS.put("funct",    "FUNCT");
+    RESERVED_WORDS.put("neg",    "NEGATIVE");
+    RESERVED_WORDS.put("not",    "BANG");
     RESERVED_WORDS.put("for",    "FOR");
     RESERVED_WORDS.put("if",    "IF");
     RESERVED_WORDS.put("nil",    "NIL");
@@ -66,6 +62,12 @@ class TokenType{
     RESERVED_WORDS.put("evalor",    "EVALOR");
     RESERVED_WORDS.put("scrnout",    "PRINT");
     RESERVED_WORDS.put("ret",    "RETURN");
+    RESERVED_WORDS.put("true",    "TRUE");
+    RESERVED_WORDS.put("gt",    "GREATER");
+    RESERVED_WORDS.put("gte",    "GREATER_EQUAL");
+    RESERVED_WORDS.put("lt",    "LESS");
+    RESERVED_WORDS.put("lte",    "LESS_EQUAL");
+
     // RESERVED_WORDS.put("boo",    "BOOLEAN_TYPE");
     // RESERVED_WORDS.put("num",    "NUMBER_TYPE");
     // RESERVED_WORDS.put("str",    "STRING_TYPE");

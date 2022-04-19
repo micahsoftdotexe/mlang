@@ -59,6 +59,7 @@ abstract class Stmt {
     }
 
     final Token name;
+    final Token type;
     final List<Token> params;
     final List<Stmt> body;
   }

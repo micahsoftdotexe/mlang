@@ -55,7 +55,7 @@ class Scanner {
     String[] possibleToken = null;
     TokenType.LITERAL_TOKEN_TYPES.forEach((lexeme, type) -> {
       if (line.startsWith(lexeme)) {
-        if (possibleToken == null || lexeme.length() > possibleToken.getAt(0)) {
+        if (possibleToken == null || lexeme.length() > possibleToken.getAt(0).length()) {
           possibleToken = [lexeme, type];
         }
       }
@@ -71,8 +71,6 @@ class Scanner {
 
       });
       if (possibleToken != null && possibleToken.getAt(1) == "IDENTIFIER") {
-        println("here");
-        println(line);
         TokenType.RESERVED_WORDS.forEach((lexeme, type) -> {
           if (lexeme == possibleToken.getAt(0)) {
             possibleToken = [lexeme, type];
