@@ -1,0 +1,9 @@
+
+post a\str <- "outer";
+
+{
+  post a\str <- "inner";
+  scrnout(a); // expect: inner
+}
+
+scrnout(a); // expect: outer

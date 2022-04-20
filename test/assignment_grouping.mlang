@@ -1,0 +1,2 @@
+post a\str <- "a";
+(a) <- "value"; // Error at '<-': Invalid assignment target.

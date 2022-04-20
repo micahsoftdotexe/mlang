@@ -1,0 +1,19 @@
+{
+   "scratchpaper" : {
+       "stdout" : "2\n4\nnil\n",
+       "stderr" : "\u001B[35mType Error: Type 'num' is not compatible with 'str'\u001B[0m\n"
+    },
+    "empty" : {
+       "stdout" : "ok\n",
+       "stderr" : ""
+    },
+    "block_scope" : {
+       "stdout" : "inner\nouter\n",
+       "stderr" : ""
+    },
+    "assignment_grouping": {
+         "stdout" : "",
+         "stderr" : "\u001B[33m[line 2] Error at '<-': Invalid assignment target.\u001B[0m\n"
+    }
+    
+}
