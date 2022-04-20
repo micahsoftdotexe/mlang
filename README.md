@@ -18,7 +18,7 @@ The language will be implemented in a AST tree walk interpreter that will be com
   * Assign a 1 to the variable named "one".
 * `funct eq(num1\num, num2\num)\boo{ret(1 if (num1 <=> num2)). ret(0).}`
   * A function that returns a '1' if the first number is equal to the second number and a '0' if not. This demonstrates the embedded return conditions.
-* `scrnout("Hello World").`
+* `scrnout("Hello World");`
   * The obligatory "Hello World" statement.
 
 ## Grammar
@@ -48,7 +48,7 @@ comparison     ::= term ( ( "gt" | "gte" | "lt" | "lte" ) term )*
 term           ::= factor ( ( "-" | "+" ) factor )*
 factor         ::= unary ( ( "/" | "*" ) unary )*
 unary          ::= ( "not" | "neg" ) unary | call
-call           ::= primary "(" arguments? ")"*
+call           ::= primary ("(" arguments? ")")*
 primary        ::= "true" | "false" | "null"
                | NUMBER | STRING | IDENTIFIER | TYPE | "(" expression ")"
 function       ::= IDENTIFIER "\" TYPE "(" parameters? ")" block
@@ -58,6 +58,7 @@ NUMBER         ::= DIGIT+ ( "." DIGIT+ )?
 IDENTIFIER     ::= ALPHA ( ALPHA | DIGIT )*
 ALPHA          ::= [a-z] | [A-Z] | "_"
 DIGIT          ::= [0-9]
-TYPE           ::= ("boo" | "num" | "str")
+TYPE           ::= ("boo" | "num" | "str" | "fun" | "emp")
+STRING         ::= '"'[^\]*'"'
 
 ```

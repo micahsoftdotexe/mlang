@@ -55,7 +55,7 @@ class Scanner {
     String[] possibleToken = null;
     TokenType.LITERAL_TOKEN_TYPES.forEach((lexeme, type) -> {
       if (line.startsWith(lexeme)) {
-        if (possibleToken == null || lexeme.length() > possibleToken.getAt(0)) {
+        if (possibleToken == null || lexeme.length() > possibleToken.getAt(0).length()) {
           possibleToken = [lexeme, type];
         }
       }
@@ -77,6 +77,13 @@ class Scanner {
           }
 
         });
+        DataType.DATA_TYPE_NAMES.forEach((lexeme, type) -> {
+          if (lexeme == possibleToken.getAt(0)) {
+            possibleToken = [lexeme, type];
+          }
+
+        });
+        //possibleToken = [possibleToken.getAt(0), "IDENTIFIER"];
       }
     }
     return possibleToken;
@@ -91,7 +98,7 @@ class Scanner {
         tokens.add(new Token(token.getAt(1), token.getAt(0), token.getAt(0).replace('\"', ''), this.line));
         return line.substring(token.getAt(0).length());
       } else if (token.getAt(1) == "NUMBER") {
-        tokens.add(new Token(token.getAt(1), token.getAt(0), Float.parseFloat(token.getAt(0)), this.line));
+        tokens.add(new Token(token.getAt(1), token.getAt(0), Double.parseDouble(token.getAt(0)), this.line));
         return line.substring(token.getAt(0).length());
       } else {
         tokens.add(new Token(token.getAt(1), token.getAt(0), null, this.line));

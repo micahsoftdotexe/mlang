@@ -171,21 +171,25 @@ class Parser {
     consume("SEMICOLON", "Expect ';' after expression.");
     return new Stmt.Expression(expr);
   }
+  //TODO: perameter type checking
   private Stmt.Function function(String kind) {
     Token name = consume("IDENTIFIER", "Expect " + kind + " name.");
     consume("BACKSLASH", "Expect '\\' after " + kind + " name.");
     Token type = consume("TYPES", "Expect " + kind + " type.");
     consume("LEFT_PAREN", "Expect '(' after " + kind + " name.");
-    List<Token> parameters = new ArrayList<>();
+    List<List<Token>> parameters = new ArrayList<>();
     if (!check("RIGHT_PAREN")) {
       do {
         if (parameters.size() >= 255) {
           // error(peek(), "Can't have more than 255 parameters.");
           throw new MlangParseError(peek(), "Can't have more than 255 parameters.");
         }
-
-        parameters.add(
-            consume("IDENTIFIER", "Expect parameter name."));
+        Token identifier = consume("IDENTIFIER", "Expect parameter name.");
+        consume("BACKSLASH", "Expect '\\' after parameter name.");
+        Token paramtype = consume("TYPES", "Expect parameter type.");
+        parameters.add([identifier, paramtype]);
+        // parameters.add(
+        //     consume("IDENTIFIER", "Expect parameter name.",));
       } while (match("COMMA"));
     }
     consume("RIGHT_PAREN", "Expect ')' after parameters.");
@@ -369,8 +373,7 @@ class Parser {
     if (isAtEnd()) return false;
     String currentType = peek().type;
     if (type == "TYPES") {
-      return currentType == "BOOLEAN_TYPE" ||
-             currentType == "NUMBER_TYPE" || currentType == "STRING_TYPE";
+      return peek().lexeme in DataType.DATA_TYPE_NAMES;
     }
 
     return currentType == type;

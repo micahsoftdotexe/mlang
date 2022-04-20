@@ -46,7 +46,7 @@ abstract class Stmt {
 //< stmt-expression
 //> stmt-function
   static class Function extends Stmt {
-    Function(Token name, Token type, List<Token> params, List<Stmt> body) {
+    Function(Token name, Token type, List<List<Token>> params, List<Stmt> body) {
       this.name = name;
       this.type = type;
       this.params = params;
@@ -59,7 +59,8 @@ abstract class Stmt {
     }
 
     final Token name;
-    final List<Token> params;
+    final Token type;
+    final List<List<Token>> params;
     final List<Stmt> body;
   }
 //< stmt-function
@@ -89,7 +90,7 @@ abstract class Stmt {
 
     @Override
     <R> R accept(Visitor<R> visitor) {
-      return visitor.visitPrintStmt(this);
+      return visitor.visitScrnoutStmt(this);
     }
 
     final List<Expr> arguments;
