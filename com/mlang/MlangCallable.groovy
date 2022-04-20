@@ -32,8 +32,14 @@ class MlangFunction implements MlangCallable {
                      List<Object> arguments) {
     Environment environment = new Environment(closure);
     for (int i = 0; i < declaration.params.size(); i++) {
-      environment.define(declaration.params.get(i).lexeme,
-          arguments.get(i));
+      if(Interpreter.typeCheck(arguments.get(i), declaration.params.get(i).get(1).type)) {
+        environment.define(declaration.params.get(i).getAt(0).lexeme, arguments.get(i), Interpreter.typeLookup(arguments.get(i)));
+      } else {
+        //throw new MlangTypeError(declaration.params.get(i).get(1).type, declaration.params.get(i).get(0).lexeme);
+        throw new MlangTypeError("Type '" + DataType.DATA_FULL_NAME_TYPE.get(declaration.params.get(i).get(1).type) + "' is not compatible with '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(arguments.get(i))) + "'");
+      }
+      // environment.define(declaration.params.get(i).getAt(0).lexeme,
+      //     arguments.get(i));
     }
 
     try {

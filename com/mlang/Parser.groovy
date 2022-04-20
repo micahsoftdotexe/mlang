@@ -177,16 +177,19 @@ class Parser {
     consume("BACKSLASH", "Expect '\\' after " + kind + " name.");
     Token type = consume("TYPES", "Expect " + kind + " type.");
     consume("LEFT_PAREN", "Expect '(' after " + kind + " name.");
-    List<Token> parameters = new ArrayList<>();
+    List<List<Token>> parameters = new ArrayList<>();
     if (!check("RIGHT_PAREN")) {
       do {
         if (parameters.size() >= 255) {
           // error(peek(), "Can't have more than 255 parameters.");
           throw new MlangParseError(peek(), "Can't have more than 255 parameters.");
         }
-
-        parameters.add(
-            consume("IDENTIFIER", "Expect parameter name."));
+        Token identifier = consume("IDENTIFIER", "Expect parameter name.");
+        consume("BACKSLASH", "Expect '\\' after parameter name.");
+        Token paramtype = consume("TYPES", "Expect parameter type.");
+        parameters.add([identifier, paramtype]);
+        // parameters.add(
+        //     consume("IDENTIFIER", "Expect parameter name.",));
       } while (match("COMMA"));
     }
     consume("RIGHT_PAREN", "Expect ')' after parameters.");

@@ -44,7 +44,7 @@ class TokenType{
     LITERAL_TOKEN_TYPES.put(";",   "SEMICOLON");
     LITERAL_TOKEN_TYPES.put("<!=>",   "BANG_EQUAL");
     LITERAL_TOKEN_TYPES.put("<-",    "ASSIGN"); //Equal
-    LITERAL_TOKEN_TYPES.put("<=>",   "EQUAL_EQUAL");
+    LITERAL_TOKEN_TYPES.put("<==>",   "EQUAL_EQUAL");
     RESERVED_WORDS = new HashMap<>();
     RESERVED_WORDS.put("and",    "AND");
     RESERVED_WORDS.put("evaland",    "EVALAND");
