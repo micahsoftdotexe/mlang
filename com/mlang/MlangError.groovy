@@ -6,9 +6,6 @@ class MlangError extends Error {
     public static final String PARSER = "\u001B[33m";
     public static final String INTERPRETER = "\u001B[34m";
     public static final String TYPE = "\u001B[35m";
-    // private static final String ANSI_PURPLE = "\u001B[35m";
-    // private static final String ANSI_CYAN = "\u001B[36m";
-    // private static final String ANSI_WHITE = "\u001B[37m";
 
     public String message;
     private int line_number;

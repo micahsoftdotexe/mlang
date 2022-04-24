@@ -106,9 +106,7 @@ class Interpreter implements Expr.Visitor<Object>,
   }
   @Override
   public Void visitFunctionStmt(Stmt.Function stmt) {
-    //TODO: Add return type to fuction declaration
     MlangFunction function = new MlangFunction(stmt, environment);
-    //TODO: hardcode type for funct type
     environment.define(stmt.name.lexeme, function, "FUNCTION_TYPE");
     return null;
   }

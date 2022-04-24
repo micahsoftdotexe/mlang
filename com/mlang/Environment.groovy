@@ -50,7 +50,7 @@ class Environment {
       values.put(name, value);
       types.put(name, type);
     } else {
-      throw MlangTypeError(
+      throw new MlangTypeError(
           "Type '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(value)) + "' is not assignable to type '" + DataType.DATA_FULL_NAME_TYPE.get(type) + "'.");
     }
   }

@@ -1,0 +1,7 @@
+post one\num <- 1;
+scrnout(one);
+post one\str <- "Hello";
+scrnout(one);
+post one\boo <- true;
+scrnout(one);
+one <- "Hello";

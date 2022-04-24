@@ -21,7 +21,7 @@ class MlangFunction implements MlangCallable {
   }
   @Override
   public String toString() {
-    return "<fn " + declaration.name.lexeme +" \\" + declaration.type.lexeme + ">";
+    return "<fn " + declaration.name.lexeme +"\\" + declaration.type.lexeme + ">";
   }
   @Override
   public int arity() {
@@ -35,11 +35,8 @@ class MlangFunction implements MlangCallable {
       if(Interpreter.typeCheck(arguments.get(i), declaration.params.get(i).get(1).type)) {
         environment.define(declaration.params.get(i).getAt(0).lexeme, arguments.get(i), Interpreter.typeLookup(arguments.get(i)));
       } else {
-        //throw new MlangTypeError(declaration.params.get(i).get(1).type, declaration.params.get(i).get(0).lexeme);
         throw new MlangTypeError("Type '" + DataType.DATA_FULL_NAME_TYPE.get(declaration.params.get(i).get(1).type) + "' is not compatible with '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(arguments.get(i))) + "'");
       }
-      // environment.define(declaration.params.get(i).getAt(0).lexeme,
-      //     arguments.get(i));
     }
 
     try {

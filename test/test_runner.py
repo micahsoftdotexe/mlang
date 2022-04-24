@@ -34,18 +34,11 @@ def run_make(command, file_path=None):
 
 
 def run_file(file_path):
-    process = subprocess.Popen(f"make build", shell=True)
+    #process = subprocess.Popen(f"make build", shell=True)
     process = subprocess.Popen(f"java -cp ./lib/groovy-4.0.1.jar:. com.mlang.Mlang {file_path}", shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, error = process.communicate()
     process.kill()
     return [stdout, error]
-
-def test_scratchpaper():
-    out = run_file("test/scratchpaper.mlang")
-    answers = load_test_answer("test/answers.json", "scratchpaper")
-
-    assert out[0] == bytes(answers["stdout"], "utf-8")
-    assert out[1] == bytes(answers["stderr"], "utf-8")
 
 def test_block():
     out = run_file("test/empty.mlang")
@@ -64,6 +57,41 @@ def test_block_scope():
 def test_assignment_grouping():
     out = run_file("test/assignment_grouping.mlang")
     answers = load_test_answer("test/answers.json", "assignment_grouping")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_nil_1():
+    out = run_file("test/nil_1.mlang")
+    answers = load_test_answer("test/answers.json", "nil_1")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_nil_2():
+    out = run_file("test/nil_2.mlang")
+    answers = load_test_answer("test/answers.json", "nil_2")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_type_checking_1():
+    out = run_file("test/type_checking_1.mlang")
+    answers = load_test_answer("test/answers.json", "type_checking_1")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_type_checking_2():
+    out = run_file("test/type_checking_2.mlang")
+    answers = load_test_answer("test/answers.json", "type_checking_2")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_return_stmt():
+    out = run_file("test/return.mlang")
+    answers = load_test_answer("test/answers.json", "return")
 
     assert out[0] == bytes(answers["stdout"], "utf-8")
     assert out[1] == bytes(answers["stderr"], "utf-8")
