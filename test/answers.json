@@ -46,5 +46,22 @@
    "or_and_eval": {
       "stdout" : "true\n1\nfalse\nnil\n",
       "stderr" : ""
+   },
+   "bool_equality": {
+      "stdout" : "true\nfalse\nfalse\ntrue\nfalse\nfalse\nfalse\nfalse\nfalse\nfalse\ntrue\ntrue\nfalse\ntrue\ntrue\ntrue\ntrue\ntrue\n",
+      "stderr" : ""
+   },
+   "not": {
+      "stdout" : "false\ntrue\ntrue\n",
+      "stderr" : ""
+   },
+   "if": {
+      "stdout" : "good\nblock\ntrue\n",
+      "stderr" : ""
+   },
+   "for": {
+      "stdout" : "0\n1\n2\n3\n",
+      "stderr" : ""
    }
+
 }

@@ -116,3 +116,31 @@ def test_or_and_eval():
 
     assert out[0] == bytes(answers["stdout"], "utf-8")
     assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_bool_equality():
+    out = run_file("test/bool_equality.mlang")
+    answers = load_test_answer("test/answers.json", "bool_equality")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_not():
+    out = run_file("test/not.mlang")
+    answers = load_test_answer("test/answers.json", "not")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_if():
+    out = run_file("test/if.mlang")
+    answers = load_test_answer("test/answers.json", "if")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_for():
+    out = run_file("test/for.mlang")
+    answers = load_test_answer("test/answers.json", "for")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
