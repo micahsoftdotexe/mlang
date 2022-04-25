@@ -42,5 +42,9 @@
    "function_argument_checking_2": {
       "stdout" : "1\n",
       "stderr" : "\u001B[35m[line 14] Type Error: Type 'str' is not compatible with 'num'.\u001B[0m\n"
+   },
+   "or_and_eval": {
+      "stdout" : "true\n1\nfalse\nnil\n",
+      "stderr" : ""
    }
 }

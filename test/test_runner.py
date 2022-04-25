@@ -109,3 +109,10 @@ def test_function_argument_2():
 
     assert out[0] == bytes(answers["stdout"], "utf-8")
     assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_or_and_eval():
+    out = run_file("test/or_and_eval.mlang")
+    answers = load_test_answer("test/answers.json", "or_and_eval")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
