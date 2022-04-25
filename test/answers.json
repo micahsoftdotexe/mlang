@@ -17,22 +17,30 @@
    },
    "nil_1": {
       "stdout" : "nil\nHello\n<fn test\\emp>\nnil\n",
-      "stderr" : "\u001B[35mType Error: Type 'num' is not assignable to type 'emp'.\u001B[0m\n"
+      "stderr" : "\u001B[35m[line 10] Type Error: Type 'num' is not assignable to type 'emp'.\u001B[0m\n"
    },
    "nil_2": {
       "stdout" : "<fn test\\emp>\n",
-      "stderr" : "\u001B[35mType Error: Function 'test' does not return a value of type emp.\u001B[0m\n"
+      "stderr" : "\u001B[35m[line 5] Type Error: Function 'test' does not return a value of type emp.\u001B[0m\n"
    },
    "type_checking_1": {
       "stdout" : "1\nHello\ntrue\n",
-      "stderr" : "\u001B[35mType Error: Type 'str' is not assignable to type 'boo'.\u001B[0m\n"
+      "stderr" : "\u001B[35m[line 7] Type Error: Type 'str' is not assignable to type 'boo'.\u001B[0m\n"
    },
    "type_checking_2": {
       "stdout" : "",
-      "stderr" : "\u001B[35mType Error: Type 'str' is not assignable to type 'num'.\u001B[0m\n"
+      "stderr" : "\u001B[35m[line 1] Type Error: Type 'str' is not assignable to type 'num'.\u001B[0m\n"
    },
    "return": {
       "stdout" : "Hello\nWorld\nHello\n",
       "stderr" : ""
+   },
+   "function_argument_checking_1": {
+      "stdout" : "1\nHello\nfalse\nnil\n",
+      "stderr" : "\u001B[35m[line 17] Type Error: Type 'num' is not compatible with 'str'.\u001B[0m\n"
+   },
+   "function_argument_checking_2": {
+      "stdout" : "1\n",
+      "stderr" : "\u001B[35m[line 14] Type Error: Type 'str' is not compatible with 'num'.\u001B[0m\n"
    }
 }

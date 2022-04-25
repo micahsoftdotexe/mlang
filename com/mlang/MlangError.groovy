@@ -67,12 +67,14 @@ class MlangRuntimeError extends MlangError {
 
 class MlangTypeError extends MlangError {
     public String message;
-    MlangTypeError(String message) {
+    private int line_number;
+    MlangTypeError(String message, int line_number) {
         this.message = message;
+        this.line_number = line_number;
     }
 
     public void report() {
         System.err.println(
-            TYPE + "Type Error: " + message + ANSI_RESET);
+            TYPE + "[line "+ this.line_number + "] " + "Type Error: " + message + ANSI_RESET);
     }
 }

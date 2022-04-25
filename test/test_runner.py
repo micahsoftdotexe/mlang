@@ -95,3 +95,17 @@ def test_return_stmt():
 
     assert out[0] == bytes(answers["stdout"], "utf-8")
     assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_function_argument_1():
+    out = run_file("test/function_argument_checking_1.mlang")
+    answers = load_test_answer("test/answers.json", "function_argument_checking_1")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_function_argument_2():
+    out = run_file("test/function_argument_checking_2.mlang")
+    answers = load_test_answer("test/answers.json", "function_argument_checking_2")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")
