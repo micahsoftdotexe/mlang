@@ -32,7 +32,7 @@ class Environment {
         values.put(name.lexeme, value);
       } else {
         throw new MlangTypeError(
-            "Type '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(value)) + "' is not assignable to type '" + DataType.DATA_FULL_NAME_TYPE.get(types.get(name.lexeme)) + "'.");
+            "Type '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(value)) + "' is not assignable to type '" + DataType.DATA_FULL_NAME_TYPE.get(types.get(name.lexeme)) + "'.", name.line);
       }
       return;
     }
@@ -45,13 +45,13 @@ class Environment {
     throw new MlangRuntimeError(name,
         "Undefined variable '" + name.lexeme + "'.");
   }
-  void define(String name, Object value, String type) {
+  void define(String name, Object value, String type, int line_number) {
     if (Interpreter.typeCheck(value, type)) {
       values.put(name, value);
       types.put(name, type);
     } else {
-      throw MlangTypeError(
-          "Type '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(value)) + "' is not assignable to type '" + DataType.DATA_FULL_NAME_TYPE.get(type) + "'.");
+      throw new MlangTypeError(
+          "Type '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(value)) + "' is not assignable to type '" + DataType.DATA_FULL_NAME_TYPE.get(type) + "'.", line_number);
     }
   }
   @Override

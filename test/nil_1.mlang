@@ -1,0 +1,10 @@
+post test\emp  <- nil;
+scrnout(test);
+funct test\emp() {
+    scrnout("Hello");
+}
+test();
+scrnout(test);
+post test\emp <- nil;
+scrnout(test);
+test <- 1;

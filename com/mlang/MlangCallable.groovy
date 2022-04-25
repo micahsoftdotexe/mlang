@@ -4,7 +4,7 @@ import java.util.List;
 
 interface MlangCallable {
   int arity();
-  Object call(Interpreter interpreter, List<Object> arguments);
+  Object call(Interpreter interpreter, List<Object> arguments, int call_line);
 }
 
 class MlangFunction implements MlangCallable {
@@ -21,7 +21,7 @@ class MlangFunction implements MlangCallable {
   }
   @Override
   public String toString() {
-    return "<fn " + declaration.name.lexeme +" \\" + declaration.type.lexeme + ">";
+    return "<fn " + declaration.name.lexeme +"\\" + declaration.type.lexeme + ">";
   }
   @Override
   public int arity() {
@@ -29,17 +29,14 @@ class MlangFunction implements MlangCallable {
   }
   @Override
   public Object call(Interpreter interpreter,
-                     List<Object> arguments) {
+                     List<Object> arguments, int call_line) {
     Environment environment = new Environment(closure);
     for (int i = 0; i < declaration.params.size(); i++) {
       if(Interpreter.typeCheck(arguments.get(i), declaration.params.get(i).get(1).type)) {
-        environment.define(declaration.params.get(i).getAt(0).lexeme, arguments.get(i), Interpreter.typeLookup(arguments.get(i)));
+        environment.define(declaration.params.get(i).getAt(0).lexeme, arguments.get(i), Interpreter.typeLookup(arguments.get(i)), call_line);
       } else {
-        //throw new MlangTypeError(declaration.params.get(i).get(1).type, declaration.params.get(i).get(0).lexeme);
-        throw new MlangTypeError("Type '" + DataType.DATA_FULL_NAME_TYPE.get(declaration.params.get(i).get(1).type) + "' is not compatible with '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(arguments.get(i))) + "'");
+        throw new MlangTypeError("Type '" + DataType.DATA_FULL_NAME_TYPE.get(declaration.params.get(i).get(1).type) + "' is not compatible with '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(arguments.get(i))) + "'.", call_line);
       }
-      // environment.define(declaration.params.get(i).getAt(0).lexeme,
-      //     arguments.get(i));
     }
 
     try {
@@ -49,7 +46,7 @@ class MlangFunction implements MlangCallable {
         return returnValue.value;  
       } else {
         throw new MlangTypeError(
-            "Function '" + declaration.name.lexeme + "' does not return a value of type " + DataType.DATA_FULL_NAME_TYPE.get(this.returnType()) +  ".");
+            "Function '" + declaration.name.lexeme + "' does not return a value of type " + DataType.DATA_FULL_NAME_TYPE.get(this.returnType()) +  ".", call_line);
       }
     }
     return null;

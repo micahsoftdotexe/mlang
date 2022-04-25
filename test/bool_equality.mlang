@@ -1,0 +1,23 @@
+scrnout( true <==> true);    // expect: true
+scrnout( true <==> false);   // expect: false
+scrnout( false <==> true);   // expect: false
+scrnout( false <==> false);  // expect: true
+
+// Not equal to other types.
+scrnout( true <==> 1);        // expect: false
+scrnout( false <==> 0);       // expect: false
+scrnout( true <==> "true");   // expect: false
+scrnout( false <==> "false"); // expect: false
+scrnout( false <==> "");      // expect: false
+
+scrnout( true <!=> true);    // expect: false
+scrnout( true <!=> false);   // expect: true
+scrnout( false <!=> true);   // expect: true
+scrnout( false <!=> false);  // expect: false
+
+// Not equal to other types.
+scrnout( true <!=> 1);        // expect: true
+scrnout( false <!=> 0);       // expect: true
+scrnout( true <!=> "true");   // expect: true
+scrnout( false <!=> "false"); // expect: true
+scrnout( false <!=> "");      // expect: true

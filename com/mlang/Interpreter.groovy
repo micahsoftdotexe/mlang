@@ -17,20 +17,20 @@ class Interpreter implements Expr.Visitor<Object>,
 
       @Override
       public Object call(Interpreter interpreter,
-                         List<Object> arguments) {
+                         List<Object> arguments, int call_line) {
         return (double)System.currentTimeMillis() / 1000.0;
       }
 
       @Override
       public String toString() { return "<native fn>"; }
-    }, "FUNCTION_TYPE");
+    }, "FUNCTION_TYPE", 0);
     globals.define("in", new MlangCallable() {
       @Override
       public int arity() { return 0; }
 
       @Override
       public Object call(Interpreter interpreter,
-                         List<Object> arguments) {
+                         List<Object> arguments, int call_line) {
         // Scanner inputScanner = new Scanner(System.in);
         // String input = inputScanner.nextLine();
         String input  = new java.util.Scanner(System.in).nextLine();
@@ -39,7 +39,7 @@ class Interpreter implements Expr.Visitor<Object>,
 
       @Override
       public String toString() { return "<native fn>"; }
-    }, "FUNCTION_TYPE");
+    }, "FUNCTION_TYPE", 0);
   }
 
   void interpret(List<Stmt> statements) {
@@ -106,10 +106,8 @@ class Interpreter implements Expr.Visitor<Object>,
   }
   @Override
   public Void visitFunctionStmt(Stmt.Function stmt) {
-    //TODO: Add return type to fuction declaration
     MlangFunction function = new MlangFunction(stmt, environment);
-    //TODO: hardcode type for funct type
-    environment.define(stmt.name.lexeme, function, "FUNCTION_TYPE");
+    environment.define(stmt.name.lexeme, function, "FUNCTION_TYPE", stmt.name.line);
     return null;
   }
   @Override
@@ -150,7 +148,7 @@ class Interpreter implements Expr.Visitor<Object>,
       value = evaluate(stmt.initializer);
     }
 
-    environment.define(stmt.name.lexeme, value, stmt.type.type);
+    environment.define(stmt.name.lexeme, value, stmt.type.type, stmt.name.line);
     return null;
   }
   @Override
@@ -219,10 +217,8 @@ class Interpreter implements Expr.Visitor<Object>,
     for (Expr argument : expr.arguments) { // [in-order]
       arguments.add(evaluate(argument));
     }
-
     if (!(callee instanceof MlangCallable)) {
-      throw new MlangRuntimeError(expr.paren,
-          "Can only call functions and classes.");
+      throw new MlangRuntimeError(expr.paren, "Can only call functions.");
     }
 
     MlangCallable function = (MlangCallable)callee;
@@ -232,7 +228,7 @@ class Interpreter implements Expr.Visitor<Object>,
           arguments.size() + ".");
     }
 
-    return function.call(this, arguments);
+    return function.call(this, arguments, expr.paren.line);
   }
   @Override
   public Object visitGroupingExpr(Expr.Grouping expr) {

@@ -8,3 +8,6 @@ build:
 	@groovyc ./com/mlang/*.groovy
 clean: 
 	@rm ./com/mlang/*.class
+tests: build
+	@pytest -v test/test_runner.py
+	@make clean

@@ -171,7 +171,6 @@ class Parser {
     consume("SEMICOLON", "Expect ';' after expression.");
     return new Stmt.Expression(expr);
   }
-  //TODO: perameter type checking
   private Stmt.Function function(String kind) {
     Token name = consume("IDENTIFIER", "Expect " + kind + " name.");
     consume("BACKSLASH", "Expect '\\' after " + kind + " name.");
