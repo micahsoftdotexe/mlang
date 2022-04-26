@@ -1,0 +1,3 @@
+for (post i\num <- 0; i lt 4; i <- i+1) {
+    scrnout(i);
+}

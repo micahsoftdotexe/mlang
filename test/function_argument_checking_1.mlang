@@ -1,0 +1,17 @@
+funct test\emp(value\num) {
+    scrnout(value);
+}
+funct test2\emp(value\str) {
+    scrnout(value);
+}
+funct test3\emp(value\boo) {
+    scrnout(value);
+}
+funct test4\emp(value\emp) {
+    scrnout(value);
+}
+test(1);
+test2("Hello");
+test3(false);
+test4(nil);
+test("Hello");

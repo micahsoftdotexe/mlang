@@ -1,0 +1,15 @@
+funct one\str() {
+    ret("Hello");
+}
+funct two\str() {
+    ret("Hello" if(1 gt 2));
+    ret("World");
+}
+funct three\str() {
+    ret("Hello" if(1 lt 2));
+    ret("World");
+}
+
+scrnout(one());
+scrnout(two());
+scrnout(three());

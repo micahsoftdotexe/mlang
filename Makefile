@@ -1,8 +1,13 @@
 GROOVYJAR = ./lib/groovy-4.0.1.jar
 ENTRYPOINT = com.mlang.Mlang
-run: build
-	@java -cp $(GROOVYJAR):. $(ENTRYPOINT)
+run:
+	@java -cp $(GROOVYJAR):. $(ENTRYPOINT) $(FILE)
+runfull: build
+	@java -cp $(GROOVYJAR):. $(ENTRYPOINT) $(FILE)
 build:
 	@groovyc ./com/mlang/*.groovy
 clean: 
 	@rm ./com/mlang/*.class
+tests: build
+	@pytest -v test/test_runner.py
+	@make clean

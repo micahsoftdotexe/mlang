@@ -1,0 +1,5 @@
+funct test\emp(){
+    ret("Hello");
+}
+scrnout(test);
+test();

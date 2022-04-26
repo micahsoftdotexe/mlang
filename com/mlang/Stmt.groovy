@@ -9,7 +9,7 @@ abstract class Stmt {
     R visitExpressionStmt(Expression stmt);
     R visitFunctionStmt(Function stmt);
     R visitIfStmt(If stmt);
-    R visitPrintStmt(Print stmt);
+    R visitScrnoutStmt(Scrnout stmt);
     R visitReturnStmt(Return stmt);
     R visitVarStmt(Var stmt);
     R visitWhileStmt(While stmt);
@@ -46,8 +46,9 @@ abstract class Stmt {
 //< stmt-expression
 //> stmt-function
   static class Function extends Stmt {
-    Function(Token name, List<Token> params, List<Stmt> body) {
+    Function(Token name, Token type, List<List<Token>> params, List<Stmt> body) {
       this.name = name;
+      this.type = type;
       this.params = params;
       this.body = body;
     }
@@ -58,7 +59,8 @@ abstract class Stmt {
     }
 
     final Token name;
-    final List<Token> params;
+    final Token type;
+    final List<List<Token>> params;
     final List<Stmt> body;
   }
 //< stmt-function
@@ -81,24 +83,25 @@ abstract class Stmt {
   }
 //< stmt-if
 //> stmt-print
-  static class Print extends Stmt {
-    Print(Expr expression) {
-      this.expression = expression;
+  static class Scrnout extends Stmt {
+    Scrnout(List<Expr> arguments) {
+      this.arguments = arguments;
     }
 
     @Override
     <R> R accept(Visitor<R> visitor) {
-      return visitor.visitPrintStmt(this);
+      return visitor.visitScrnoutStmt(this);
     }
 
-    final Expr expression;
+    final List<Expr> arguments;
   }
 //< stmt-print
 //> stmt-return
   static class Return extends Stmt {
-    Return(Token keyword, Expr value) {
+    Return(Token keyword, Expr value, Expr condition) {
       this.keyword = keyword;
       this.value = value;
+      this.condition = condition;
     }
 
     @Override
@@ -108,12 +111,14 @@ abstract class Stmt {
 
     final Token keyword;
     final Expr value;
+    final Expr condition;
   }
 //< stmt-return
 //> stmt-var
   static class Var extends Stmt {
-    Var(Token name, Expr initializer) {
+    Var(Token name, Token type, Expr initializer) {
       this.name = name;
+      this.type = type;
       this.initializer = initializer;
     }
 
@@ -123,6 +128,7 @@ abstract class Stmt {
     }
 
     final Token name;
+    final Token type;
     final Expr initializer;
   }
 //< stmt-var

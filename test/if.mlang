@@ -1,0 +1,10 @@
+// Evaluate the 'then' expression if the condition is true.
+if (true) scrnout("good"); // expect: good
+if (false) scrnout("bad");
+
+// Allow block body.
+if (true) { scrnout("block"); } // expect: block
+
+// Assignment in if condition.
+post a\boo <- false;
+if (a <- true) scrnout(a); // expect: true

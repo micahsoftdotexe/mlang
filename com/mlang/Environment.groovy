@@ -6,6 +6,7 @@ import java.util.Map;
 class Environment {
   final Environment enclosing;
   private final Map<String, Object> values = new HashMap<>();
+  private final Map<String, String> types = new HashMap<>();
   Environment() {
     enclosing = null;
   }
@@ -21,13 +22,18 @@ class Environment {
 
     if (enclosing != null) return enclosing.get(name);
 
-    throw new RuntimeError(name,
+    throw new MlangRuntimeError(name,
         "Undefined variable '" + name.lexeme + "'.");
   }
 
   void assign(Token name, Object value) {
     if (values.containsKey(name.lexeme)) {
-      values.put(name.lexeme, value);
+      if (Interpreter.typeCheck(value, types.get(name.lexeme))) {
+        values.put(name.lexeme, value);
+      } else {
+        throw new MlangTypeError(
+            "Type '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(value)) + "' is not assignable to type '" + DataType.DATA_FULL_NAME_TYPE.get(types.get(name.lexeme)) + "'.", name.line);
+      }
       return;
     }
 
@@ -36,11 +42,17 @@ class Environment {
       return;
     }
 
-    throw new RuntimeError(name,
+    throw new MlangRuntimeError(name,
         "Undefined variable '" + name.lexeme + "'.");
   }
-  void define(String name, Object value) {
-    values.put(name, value);
+  void define(String name, Object value, String type, int line_number) {
+    if (Interpreter.typeCheck(value, type)) {
+      values.put(name, value);
+      types.put(name, type);
+    } else {
+      throw new MlangTypeError(
+          "Type '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(value)) + "' is not assignable to type '" + DataType.DATA_FULL_NAME_TYPE.get(type) + "'.", line_number);
+    }
   }
   @Override
   public String toString() {
