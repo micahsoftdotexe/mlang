@@ -22,7 +22,7 @@ class Interpreter implements Expr.Visitor<Object>,
       }
 
       @Override
-      public String toString() { return "<native fn>"; }
+      public String toString() { return "<native fn clock\\str>"; }
     }, "FUNCTION_TYPE", 0);
     globals.define("in", new MlangCallable() {
       @Override
@@ -38,7 +38,32 @@ class Interpreter implements Expr.Visitor<Object>,
       }
 
       @Override
-      public String toString() { return "<native fn>"; }
+      public String toString() { return "<native fn in\\str>"; }
+    }, "FUNCTION_TYPE", 0);
+    globals.define("argument", new MlangCallable() {
+      @Override
+      public int arity() { return 1; }
+
+      @Override
+      public Object call(Interpreter interpreter,
+                         List<Object> arguments, int call_line) {
+        // Scanner inputScanner = new Scanner(System.in);
+        // String input = inputScanner.nextLine();
+      
+        if (Interpreter.typeCheck(arguments.get(0), "NUMBER_TYPE")) {
+          if (arguments.get(0) < Mlang.cmdargs.size()) {
+            return Mlang.cmdargs.get((int)arguments.get(0));
+          } else {
+            throw new MlangRuntimeError(new Token("NUMBER_TYPE", (String)(int) arguments.get(0), arguments.get(0), call_line), "Index " + (int) arguments.get(0) + " out of range in argument list.");
+          }
+          Mlang.cmdargs.get((int)arguments.get(0));
+        } else {
+          throw new MlangTypeError("Type '" + DataType.DATA_FULL_NAME_TYPE.get(Interpreter.typeLookup(arguments.get(0))) + "' is not compatible with 'num'.", call_line);
+        }
+      }
+
+      @Override
+      public String toString() { return "<native fn argument\\str>"; }
     }, "FUNCTION_TYPE", 0);
   }
 

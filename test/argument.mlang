@@ -1,0 +1,2 @@
+scrnout(argument(0));
+scrnout(argument(1));

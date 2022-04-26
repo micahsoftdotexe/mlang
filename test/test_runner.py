@@ -144,3 +144,37 @@ def test_for():
 
     assert out[0] == bytes(answers["stdout"], "utf-8")
     assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_in():
+    for i in range(0, 10):
+        process = subprocess.Popen(f"java -cp ./lib/groovy-4.0.1.jar:. com.mlang.Mlang test/in.mlang", shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, error = process.communicate(input=bytes(f"{i}\n", "utf-8"))
+        process.kill()
+        answers = load_test_answer("test/answers.json", "in")
+
+        assert stdout == bytes(answers["stdout"][i], "utf-8")
+        assert error == bytes(answers["stderr"][i], "utf-8")
+
+def test_argument():
+    process = subprocess.Popen(f"java -cp ./lib/groovy-4.0.1.jar:. com.mlang.Mlang test/argument.mlang hello", shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, error = process.communicate()
+    process.kill()
+    answers = load_test_answer("test/answers.json", "argument")
+
+    assert stdout == bytes(answers["stdout"][0], "utf-8")
+    assert error == bytes(answers["stderr"][0], "utf-8")
+
+    process = subprocess.Popen(f"java -cp ./lib/groovy-4.0.1.jar:. com.mlang.Mlang test/argument.mlang", shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, error = process.communicate()
+    process.kill()
+    answers = load_test_answer("test/answers.json", "argument")
+
+    assert stdout == bytes(answers["stdout"][1], "utf-8")
+    assert error == bytes(answers["stderr"][1], "utf-8")
+
+def test_multiple_scrnout():
+    out = run_file("test/multiple_scrnout.mlang")
+    answers = load_test_answer("test/answers.json", "multiple_scrnout")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")

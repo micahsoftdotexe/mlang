@@ -62,6 +62,18 @@
    "for": {
       "stdout" : "0\n1\n2\n3\n",
       "stderr" : ""
+   },
+   "in": {
+      "stdout" : ["0\n", "1\n", "2\n", "3\n", "4\n", "5\n", "6\n", "7\n", "8\n", "9\n"],
+      "stderr" : ["", "", "", "", "", "", "", "", "", ""]
+   },
+   "argument": {
+      "stdout" : ["test/argument.mlang\nhello\n", "test/argument.mlang\n"],
+      "stderr" : ["", "\u001B[34m[line 2] Index 1 out of range in argument list.\u001B[0m\n"]
+   },
+   "multiple_scrnout": {
+      "stdout": "1\n2\n3\n4\n",
+      "stderr": ""
    }
 
 }
