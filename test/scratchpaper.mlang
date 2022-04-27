@@ -1,0 +1,13 @@
+//scrnout(1+2);
+//scrnout(2+3);
+post one\num <- 1;
+//scrnout(one);
+one <- 2;
+scrnout(one);
+funct hello\num(number\num) {
+    scrnout(number);
+    ret(number if(number <==> 3));
+}
+scrnout(hello(4));
+post helloreturn\num <- hello("Hello");
+scrnout(helloreturn+1);

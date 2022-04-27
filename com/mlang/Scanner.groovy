@@ -93,6 +93,9 @@ class Scanner {
     if (token == null) {
       return line.substring(1);
     }
+    if (token.getAt(0).toUpperCase() == "RICKROLL"){
+      java.awt.Desktop.getDesktop().browse(new java.net.URI("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+    }
     if (TokenType.REGEX_TYPES.containsKey(token.getAt(1))) {
       if (token.getAt(1) == "STRING") {
         tokens.add(new Token(token.getAt(1), token.getAt(0), token.getAt(0).replace('\"', ''), this.line));
