@@ -83,7 +83,6 @@ class Scanner {
           }
 
         });
-        //possibleToken = [possibleToken.getAt(0), "IDENTIFIER"];
       }
     }
     return possibleToken;
