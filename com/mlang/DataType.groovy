@@ -10,6 +10,7 @@ class DataType {
         DATA_TYPE_NAMES.put("str", "STRING_TYPE");
         DATA_TYPE_NAMES.put("fun", "FUNCTION_TYPE");
         DATA_TYPE_NAMES.put("emp", "NULL_TYPE");
+        DATA_TYPE_NAMES.put("any", "ANY_TYPE");
         DATA_TYPE_CHECKS.put("BOOLEAN_TYPE", (value) -> {
             return value instanceof Boolean;
         });
@@ -24,6 +25,9 @@ class DataType {
         });
         DATA_TYPE_CHECKS.put("NULL_TYPE", (value) -> {
             return value == null;
+        });
+        DATA_TYPE_CHECKS.put("ANY_TYPE", (value) -> {
+            return true;
         });
         for (String type : DATA_TYPE_NAMES.keySet()) {
             DATA_FULL_NAME_TYPE.put(DATA_TYPE_NAMES.get(type), type);

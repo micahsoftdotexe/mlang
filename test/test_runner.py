@@ -178,3 +178,10 @@ def test_multiple_scrnout():
 
     assert out[0] == bytes(answers["stdout"], "utf-8")
     assert out[1] == bytes(answers["stderr"], "utf-8")
+
+def test_any_type():
+    out = run_file("test/any_type.mlang")
+    answers = load_test_answer("test/answers.json", "any_type")
+
+    assert out[0] == bytes(answers["stdout"], "utf-8")
+    assert out[1] == bytes(answers["stderr"], "utf-8")

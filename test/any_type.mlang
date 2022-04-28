@@ -1,0 +1,10 @@
+funct test\any(value\any) {
+    ret(value);
+}
+scrnout(test(1));
+scrnout(test("Hello"));
+post test\any <- "Hello";
+scrnout(test);
+test <- true;
+scrnout(test);
+

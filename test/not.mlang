@@ -1,3 +1,4 @@
 scrnout( not true);    // expect: false
 scrnout( not false);   // expect: true
 scrnout( not not true);   // expect: true
+scrnout( neg 1);

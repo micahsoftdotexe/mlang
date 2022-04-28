@@ -52,7 +52,7 @@
       "stderr" : ""
    },
    "not": {
-      "stdout" : "false\ntrue\ntrue\n",
+      "stdout" : "false\ntrue\ntrue\n-1\n",
       "stderr" : ""
    },
    "if": {
@@ -73,6 +73,10 @@
    },
    "multiple_scrnout": {
       "stdout": "1\n2\n3\n4\n",
+      "stderr": ""
+   },
+   "any_type": {
+      "stdout": "1\nHello\nHello\ntrue\n",
       "stderr": ""
    }
 
