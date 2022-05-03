@@ -16,7 +16,7 @@ import java.util.HashMap;
 //   IDENTIFIER, STRING, NUMBER,
 
 //   // Keywords.
-//   AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR,
+//   AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NULL, OR,
 //   PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
 
 //   EOF
@@ -56,7 +56,7 @@ class TokenType{
     RESERVED_WORDS.put("not",    "BANG");
     RESERVED_WORDS.put("for",    "FOR");
     RESERVED_WORDS.put("if",    "IF");
-    RESERVED_WORDS.put("nil",    "NIL");
+    RESERVED_WORDS.put("null",    "NULL");
     RESERVED_WORDS.put("or",    "OR");
     RESERVED_WORDS.put("post",    "POST");
     RESERVED_WORDS.put("evalor",    "EVALOR");

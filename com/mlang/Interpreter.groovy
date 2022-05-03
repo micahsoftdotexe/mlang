@@ -336,7 +336,7 @@ class Interpreter implements Expr.Visitor<Object>,
     return a.equals(b);
   }
   private String stringify(Object object) {
-    if (object == null) return "nil";
+    if (object == null) return "null";
 
     if (object instanceof Double) {
       String text = object.toString();

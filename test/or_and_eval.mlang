@@ -1,5 +1,5 @@
 
 scrnout(1 or false); // true
 scrnout(1 evalor false); //1
-scrnout(1 and nil); //false
-scrnout(1 evaland nil); //nil
+scrnout(1 and null); //false
+scrnout(1 evaland null); //null

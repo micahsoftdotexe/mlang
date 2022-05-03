@@ -1,10 +1,10 @@
-post test\emp  <- nil;
+post test\emp  <- null;
 scrnout(test);
 funct test\emp() {
     scrnout("Hello");
 }
 test();
 scrnout(test);
-post test\emp <- nil;
+post test\emp <- null;
 scrnout(test);
 test <- 1;

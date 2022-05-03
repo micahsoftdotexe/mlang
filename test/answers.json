@@ -1,6 +1,6 @@
 {
    "scratchpaper" : {
-      "stdout" : "2\n4\nnil\n",
+      "stdout" : "2\n4\nnull\n",
       "stderr" : "\u001B[35mType Error: Type 'num' is not compatible with 'str'\u001B[0m\n"
    },
    "empty" : {
@@ -15,11 +15,11 @@
       "stdout" : "",
       "stderr" : "\u001B[33m[line 2] Error at '<-': Invalid assignment target.\u001B[0m\n"
    },
-   "nil_1": {
-      "stdout" : "nil\nHello\n<fn test\\emp>\nnil\n",
+   "null_1": {
+      "stdout" : "null\nHello\n<fn test\\emp>\nnull\n",
       "stderr" : "\u001B[35m[line 10] Type Error: Type 'num' is not assignable to type 'emp'.\u001B[0m\n"
    },
-   "nil_2": {
+   "null_2": {
       "stdout" : "<fn test\\emp>\n",
       "stderr" : "\u001B[35m[line 5] Type Error: Function 'test' does not return a value of type emp.\u001B[0m\n"
    },
@@ -36,7 +36,7 @@
       "stderr" : ""
    },
    "function_argument_checking_1": {
-      "stdout" : "1\nHello\nfalse\nnil\n",
+      "stdout" : "1\nHello\nfalse\nnull\n",
       "stderr" : "\u001B[35m[line 17] Type Error: Type 'num' is not compatible with 'str'.\u001B[0m\n"
    },
    "function_argument_checking_2": {
@@ -44,7 +44,7 @@
       "stderr" : "\u001B[35m[line 14] Type Error: Type 'str' is not compatible with 'num'.\u001B[0m\n"
    },
    "or_and_eval": {
-      "stdout" : "true\n1\nfalse\nnil\n",
+      "stdout" : "true\n1\nfalse\nnull\n",
       "stderr" : ""
    },
    "bool_equality": {

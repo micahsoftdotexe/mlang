@@ -13,5 +13,5 @@ funct test4\emp(value\emp) {
 test(1);
 test2("Hello");
 test3(false);
-test4(nil);
+test4(null);
 test("Hello");

@@ -1,6 +1,6 @@
 # M (The Bane of Prof O's Existence)
 The M language is based on the lox language but with the following alterations/additions:
-* Statically typed (boolean: boo, Number: num, string: str, nil/void: emp)
+* Statically typed (boolean: boo, Number: num, string: str, null/void: emp)
 * Short circuit but two types of and/or andeval/oreval to return evaluated side, and/or to return boolean
 * Statically typed functions (referring to their return type)
 * Assignment operator will be "<-"

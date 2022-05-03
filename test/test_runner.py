@@ -61,16 +61,16 @@ def test_assignment_grouping():
     assert out[0] == bytes(answers["stdout"], "utf-8")
     assert out[1] == bytes(answers["stderr"], "utf-8")
 
-def test_nil_1():
-    out = run_file("test/nil_1.mlang")
-    answers = load_test_answer("test/answers.json", "nil_1")
+def test_null_1():
+    out = run_file("test/null_1.mlang")
+    answers = load_test_answer("test/answers.json", "null_1")
 
     assert out[0] == bytes(answers["stdout"], "utf-8")
     assert out[1] == bytes(answers["stderr"], "utf-8")
 
-def test_nil_2():
-    out = run_file("test/nil_2.mlang")
-    answers = load_test_answer("test/answers.json", "nil_2")
+def test_null_2():
+    out = run_file("test/null_2.mlang")
+    answers = load_test_answer("test/answers.json", "null_2")
 
     assert out[0] == bytes(answers["stdout"], "utf-8")
     assert out[1] == bytes(answers["stderr"], "utf-8")
