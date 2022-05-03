@@ -62,7 +62,9 @@ TYPE           ::= ("boo" | "num" | "str" | "fun" | "emp" | "any")
 STRING         ::= '"'[^\]*'"'
 
 ```
-
+## Dependencies
+- Java
+- Pytest (in order to run tests)
 ## How to Run
 - Build `make build`
 - Run REPL `make run`
